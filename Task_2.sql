@@ -3,7 +3,7 @@
 
 --Регионы
 insert into areas (area_name) 
-select 	'Area_' || md5(random()::text)
+select 'Area_' || md5(random()::text)
 from generate_series(1, 100);
 
 
