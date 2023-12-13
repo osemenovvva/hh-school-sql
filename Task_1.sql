@@ -1,35 +1,3 @@
-drop type if exists compensation_currency cascade;
-drop type if exists experience_level cascade;
-drop type if exists employment_type cascade;
-drop type if exists schedule_type cascade;
-drop type if exists education_level cascade;
-drop type if exists gender cascade;
-drop type if exists response_status cascade;
-
-drop table if exists countries cascade;
-drop table if exists areas cascade;
-drop table if exists specializations cascade;
-drop table if exists skills cascade;
-drop table if exists employers cascade;
-drop table if exists vacancies cascade;
-drop table if exists vacancy_skills cascade;
-drop table if exists applicants cascade;
-drop table if exists resumes cascade;
-drop table if exists experience cascade;
-drop table if exists resume_skills cascade;
-drop table if exists responses cascade;
-
-
-
-drop type if exists compensationcurrency cascade;
-drop type if exists experiencelevel cascade;
-drop type if exists employmenttype cascade;
-drop type if exists scheduletype cascade;
-drop type if exists educationlevel cascade;
-drop type if exists gender cascade;
-drop type if exists responsestatus cascade;
-
-
 --Задание 1
 --Проектирование базы данных hh
 
@@ -40,13 +8,11 @@ create type schedule_type as enum ('fullday', 'shift', 'flexible', 'remote', 'fl
 create type gender as enum ('female', 'male');
 create type response_status as enum ('response', 'invitation', 'discard');
 
-
 --Регион
 create table areas (
 	area_id 	serial primary key,
 	area_name 	varchar(100) not null
 );
-
 
 --Специализации
 create table specializations (
@@ -54,41 +20,37 @@ create table specializations (
 	specialization_name	varchar(100) not null
 );
 
-
 --Навыки
 create table skills (
 	skill_id 	serial primary key,
 	skill_name	varchar(100) not null
 );
 
-
 --Работодатели
 create table employers (
-	employer_id 				serial primary key,
-	employer_name 				varchar(100) not null,
-	description 				text,
-	is_trusted 					boolean,
+	employer_id 			serial primary key,
+	employer_name 			varchar(100) not null,
+	description 			text,
+	is_trusted 			boolean,
 	is_accredited_it_employer 	boolean,
-	logo 						uuid
+	logo 				uuid
 );
-
 
 --Вакансии
 create table vacancies (
-   vacancy_id 				serial 		primary key,
-   employer_id 				integer 	not null references employers (employer_id),
-   area_id 					integer 	not null references areas (area_id),
-   specialization_id 		integer 	not null references specializations (specialization_id),
-   position_name 			text 		not null,
-   creation_date			timestamp	not null,
-   experience_level 		experience_level not null,
-   employment_type			employment_type not null,
-   schedule_type  			schedule_type not null,
-   compensation_from 		integer,
-   compensation_to 			integer,
-   is_compensation_gross 	boolean
+	vacancy_id		serial primary key,
+	employer_id 		integer not null references employers (employer_id),
+	area_id 		integer not null references areas (area_id),
+	specialization_id 	integer not null references specializations (specialization_id),
+	position_name 		text not null,
+	creation_date		timestamp not null,
+	experience_level 	experience_level not null,
+	employment_type		employment_type not null,
+	schedule_type  		schedule_type not null,
+	compensation_from 	integer,
+	compensation_to 	integer,
+	is_compensation_gross 	boolean
 );
-
 
 --Навыки в вакансии
 create table vacancy_skills (
@@ -97,50 +59,48 @@ create table vacancy_skills (
 	primary key (vacancy_id, skill_id)
 );
 
-
 --Соискатели
 create table applicants (
 	applicant_id 		serial primary key,
-	first_name			text not null,
-	last_name			text not null,
-	middle_name			text,
+	first_name		text not null,
+	last_name		text not null,
+	middle_name		text,
 	date_of_birth 		date not null,
-	gender 				gender not null,
-	email				text,
+	gender 			gender not null,
+	email			text,
 	telephone_number	text
 );
 
-
 --Резюме
 create table resumes (
-	resume_id 					serial primary key,
-	position_name				varchar(200) not null,	
-	area_id						integer not null references areas (area_id),
-	applicant_id				integer not null references applicants (applicant_id),
-	specialization_id			integer not null references specializations (specialization_id),
-	creation_date				timestamp not null,
-    experience_level 			experience_level not null,
-    employment_type				employment_type not null,
-    schedule_type  				schedule_type not null,
-    compensation				integer,
-    is_ready_to_relocate		boolean,
-    is_ready_to_business_trips	boolean,
-    description					text,
-    photo						uuid
+	resume_id 			serial primary key,
+	position_name			varchar(200) not null,	
+	area_id				integer not null references areas (area_id),
+	applicant_id			integer not null references applicants (applicant_id),
+	specialization_id		integer not null references specializations (specialization_id),
+	creation_date			timestamp not null,
+    	experience_level 		experience_level not null,
+    	employment_type			employment_type not null,
+    	schedule_type  			schedule_type not null,
+    	compensation			integer,
+    	is_ready_to_relocate		boolean,
+    	is_ready_to_business_trips	boolean,
+    	description			text,
+    	photo				uuid
 );
 
 
 --Опыт
 create table experience (
 	experience_id 		serial primary key,
-	resume_id			integer not null references resumes (resume_id),
-	area_id				integer not null references areas (area_id),
+	resume_id		integer not null references resumes (resume_id),
+	area_id			integer not null references areas (area_id),
 	specialization_id	integer not null references specializations (specialization_id),
-	employer_id			integer not null references employers (employer_id),
+	employer_id		integer not null references employers (employer_id),
 	position_name		text not null,
-	description			text,
-	start_date			date not null,
-	end_date			date not null
+	description		text,
+	start_date		date not null,
+	end_date		date not null
 
 );
 
@@ -158,7 +118,7 @@ create table responses (
 	response_id		serial primary key,
 	resume_id		integer not null references resumes (resume_id),
 	vacancy_id		integer not null references vacancies (vacancy_id),
-	creation_date	timestamp not null,
-	response_status	response_status not null
+	creation_date		timestamp not null,
+	response_status		response_status not null
 );
 
