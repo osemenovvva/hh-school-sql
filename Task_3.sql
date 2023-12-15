@@ -7,4 +7,5 @@ select distinct area_id,
     round(avg(compensation_to) over (partition by area_id), 0) as avg_compensation_to,
     round(avg((compensation_from + compensation_to) / 2)  over (partition by area_id)) as  avg_compensation_from_to
 from vacancies v
+where v.is_compensation_gross is True
 order by area_id
